@@ -9,7 +9,7 @@ public class PlayerScript : MonoBehaviour
     Animator myAnimator;
     SpriteRenderer mySpriteRenderer;
 
-    bool isFiring;
+    bool isFiring, isCrouching;
 
     private void Awake()
     {
@@ -27,28 +27,41 @@ public class PlayerScript : MonoBehaviour
 
     private void PlayerInput()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.S))
         {
-            myRigidbody.velocity = new Vector2(-2, myRigidbody.velocity.y);
-            //transform.rotation =  Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 180);
-            mySpriteRenderer.flipX = true;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            myRigidbody.velocity = new Vector2(2, myRigidbody.velocity.y);
-            mySpriteRenderer.flipX = false;
+            isCrouching = true;
         }
         else
         {
-            myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y);
+            isCrouching = false;
         }
 
-        if (Input.GetMouseButton(0))
+        if (!isCrouching)
         {
-            isFiring = true;        }
-        else
-        {
-            isFiring = false;
+            if (Input.GetKey(KeyCode.A))
+            {
+                myRigidbody.velocity = new Vector2(-2, myRigidbody.velocity.y);
+                //transform.rotation =  Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 180);
+                mySpriteRenderer.flipX = true;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                myRigidbody.velocity = new Vector2(2, myRigidbody.velocity.y);
+                mySpriteRenderer.flipX = false;
+            }
+            else
+            {
+                myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y);
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                isFiring = true;
+            }
+            else
+            {
+                isFiring = false;
+            }
         }
     }
 
@@ -57,5 +70,6 @@ public class PlayerScript : MonoBehaviour
     {
         myAnimator.SetFloat("Velocity", Mathf.Abs(myRigidbody.velocity.x));
         myAnimator.SetBool("isFiring", isFiring);
+        myAnimator.SetBool("isCrouching", isCrouching);
     }
 }
