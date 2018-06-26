@@ -7,10 +7,12 @@ public class BulletScript : MonoBehaviour
     float speed;
 
     Rigidbody2D myRigidbody;
+    Animator myAnimator;
 
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -21,11 +23,17 @@ public class BulletScript : MonoBehaviour
     private void Update()
     {
         myRigidbody.velocity = transform.right * speed;
-        Debug.Log(myRigidbody.velocity);
+        //Debug.Log(myRigidbody.velocity);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);        
+        //Destroy(gameObject);       
+        myAnimator.SetTrigger("Explode");
+    }
+
+    public void DestoryAtTheEnd()
+    {
+        Destroy(gameObject);
     }
 }

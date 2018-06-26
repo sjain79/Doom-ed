@@ -48,6 +48,15 @@ public class PlayerScript : MonoBehaviour
             isCrouching = false;
         }
 
+        if (isCrouching)
+        {
+            transform.GetChild(0).transform.localPosition = new Vector2(transform.GetChild(0).transform.localPosition.x, -0.1f);
+        }
+        else
+        {
+            transform.GetChild(0).transform.localPosition = new Vector2(transform.GetChild(0).transform.localPosition.x, 0);
+        }
+
         if (!isCrouching)
         {
             if (Input.GetKey(KeyCode.A))
@@ -69,7 +78,7 @@ public class PlayerScript : MonoBehaviour
 
         }
 
-        //shotting logic for crouch position still remains
+        
 
         if (Input.GetMouseButton(0))
         {
