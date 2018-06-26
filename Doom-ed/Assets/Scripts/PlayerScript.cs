@@ -9,13 +9,25 @@ public class PlayerScript : MonoBehaviour
     Animator myAnimator;
     SpriteRenderer mySpriteRenderer;
 
+    [SerializeField]
+    GameObject bullet;
+
     bool isFiring, isCrouching;
+
+    [SerializeField]
+    float fireRate;
+    float timeElasped;
 
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        timeElasped = (float)Time.time;
     }
 
     private void Update()
@@ -41,12 +53,13 @@ public class PlayerScript : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 myRigidbody.velocity = new Vector2(-2, myRigidbody.velocity.y);
-                //transform.rotation =  Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 180);
                 mySpriteRenderer.flipX = true;
+                transform.GetChild(0).transform.localPosition = new Vector2(-0.111f, 0);
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 myRigidbody.velocity = new Vector2(2, myRigidbody.velocity.y);
+                transform.GetChild(0).transform.localPosition = new Vector2(0.111f, 0);
                 mySpriteRenderer.flipX = false;
             }
             else
@@ -54,14 +67,31 @@ public class PlayerScript : MonoBehaviour
                 myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y);
             }
 
-            if (Input.GetMouseButton(0))
+        }
+
+        //shotting logic for crouch position still remains
+
+        if (Input.GetMouseButton(0))
+        {
+            if ((timeElasped + fireRate) < (float)Time.time)
             {
+                timeElasped = (float)Time.time;
+                GameObject tempBullet = Instantiate(bullet, transform.GetChild(0).transform.position, Quaternion.identity);
+                if (mySpriteRenderer.flipX)
+                {
+                    tempBullet.transform.rotation = Quaternion.Euler(0, 0, 180);
+                }
+                else
+                {
+                    tempBullet.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+
                 isFiring = true;
             }
-            else
-            {
-                isFiring = false;
-            }
+        }
+        else
+        {
+            isFiring = false;
         }
     }
 
