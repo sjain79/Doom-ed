@@ -6,6 +6,13 @@ public class EnemyMovementScript : MonoBehaviour
 {
     Vector2 startPosition;
 
+    SpriteRenderer mySpriteRenderer;
+
+    private void Awake()
+    {
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     private void Start()
     {
         startPosition = (Vector2)transform.position;
